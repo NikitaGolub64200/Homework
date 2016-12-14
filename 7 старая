@@ -1,0 +1,21 @@
+#include <iostream>
+using namespace std;
+
+void strange_multiply(int &n, int m)
+{
+    int k = n;
+    
+    for (int i = 1; i < m; i++)
+        n += k;
+    
+    cout << n;
+}
+
+int main()
+{
+    int n, m;
+    cin >> n >> m;
+    
+    strange_multiply(n, m);
+    return 0;
+}
