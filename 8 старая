@@ -1,0 +1,27 @@
+#include <iostream>
+using namespace std;
+
+void proper_fraction (int n)
+{
+    int k = 0;
+    
+    for (int i = 0; i <= n; i++)
+        for (int p = 2; p < 10; p++)
+            if (i % p == 0 && n % p == 0)
+            {
+                k++;
+                i++;
+                p = 1;
+            }
+    
+    cout << k << endl;
+} 
+
+int main() 
+{ 
+    int n; 
+    cin >> n;
+    
+    proper_fraction (n);
+    return 0;
+}
