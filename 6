@@ -1,0 +1,70 @@
+
+#include <iostream>
+using namespace std;
+using namespace std;
+
+int checkLessons(int **&lessons, int &n)
+{
+    int quantityOfLessons = 1;
+    
+    for (int i = n - 2; i >= 0; i--)
+    {
+        quantityOfLessons++;
+        
+        for (int p = i + 1; p < n; p++)
+            if ((lessons[p][0] > lessons[i][0] && lessons[p][0] < lessons[i][1]) || (lessons[p][1] > lessons[i][0] && lessons[p][1] < lessons[i][1]) || (lessons[p][0] < lessons[i][0] && lessons[p][1] > lessons[i][1]) || (lessons[p][0] > lessons[i][0] && lessons[p][1] < lessons[i][1])) 
+            {
+                quantityOfLessons--;
+                break;
+            }
+    }
+    
+    return quantityOfLessons; //Возвращаем ответ
+}
+
+void qs(int **&arr, int a, int b)//эта функция сортирует массив по убыванию
+{
+    int x = arr[(a + b) / 2][1] - arr[(a + b) / 2][0];
+    
+    int i = a;
+    int j = b;
+    
+    while (i <= j)
+    {
+        while (arr[i][1] - arr[i][0] > x) i++;
+        while (arr[j][1] - arr[j][0] < x) j--;
+        if (i <= j)
+        {
+            swap(arr[i], arr[j]);
+            i++; j--;
+        }
+    }
+    
+    if (i < b)
+        qs(arr, i, b);
+    if (a < j)
+        qs(arr, a, j);
+}
+
+void shedule(int n)
+{
+    int **lessons = new int*[n];
+    for (int i = 0; i < n; i++)
+        lessons[i] = new int[2];
+    
+    for (int i = 0; i < n; i++)
+        cin >> lessons[i][0] >> lessons[i][1];
+    
+    qs(lessons, 0, n - 1);
+    
+    cout << checkLessons(lessons, n);
+} 
+
+int main() 
+{ 
+    int n; cin >> n;
+    shedule(n); 
+    
+    return 0; 
+}
+
