@@ -1,0 +1,39 @@
+#include <iostream>
+using namespace std;
+
+void print_palindrom(int n)
+{
+    int determination = 0, maxDigit = 1;
+    while (determination != n)
+    {
+        determination++;
+        maxDigit *= 10;
+    }
+    
+    int minDigit = maxDigit / 10;
+    while (minDigit % 9 != 0)
+        minDigit++;
+    
+    for (int numberToConvert; minDigit < maxDigit; minDigit += 9)
+    {
+        numberToConvert = minDigit; determination = maxDigit / 10;
+        int currentNumber = 0;
+        
+        for (int pieceOfNumber; numberToConvert != 0; determination /= 10, numberToConvert /= 10)
+        {
+            pieceOfNumber = numberToConvert % 10;
+            currentNumber += pieceOfNumber * determination;
+        }
+        
+        if (currentNumber == minDigit)
+            cout << minDigit << " ";
+    } 
+} 
+
+int main() 
+{ 
+    int n; cin >> n;
+    print_palindrom(n);  
+    return 0; 
+}
+
