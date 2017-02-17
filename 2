@@ -1,0 +1,68 @@
+
+#include <iostream>
+using namespace std;
+void perebor(int a, int b, int c)
+{
+    bool none = false;
+    bool doub = false; //Чтобы два одинаковых корня не выводились несколько раз подряд
+    int y = -1, x;
+relaunch:
+    x = 0; y++;
+    for (; a*x + b*y < c; x++) //Главный цикл, в нем изменяется только X
+    {
+        if (c == (x + 1)*a + y*b)         {
+            if (doub == false) //предостережение от одинаковых корней
+            {
+                if (x == y)
+                    doub = true;
+                
+                if (none == true) cout << x + 1 << " " << y << endl;
+                else
+                {
+                    none = true;
+                    cout << x + 1 << " " << y << endl;
+                }
+            }
+            goto relaunch;
+        }
+        else
+            if (c < (x + 1)*a + y*b) //Если следующий X сделает уравнение неравным НЕ в пользу C, перезапускаем цикл с y + 1
+                goto relaunch;
+    }
+    
+    if (none == false)
+        cout << "none";
+}
+
+bool inf(int &a, int &b, int &c)
+{ //Определяет inf
+    if (a > 0 && b < 0)
+        return false;
+    return true;
+}
+
+bool none(int &a, int &b, int &c)
+{ //Определяет none
+    if ((a % 2 == 0 && b % 2 == 0 && c % 2 != 0) || (a == 0 && b == 0) || (a > 0 && b > 0 && c < 0) || (a < 0 && b < 0 && c > 0))
+        return false; 
+    return true; 
+} 
+
+void outer_points(int &a, int &b, int &c) 
+{ 
+    if (none(a, b, c) == false) 
+        cout << "none";
+    else 
+        if (inf(a, b, c) == false) 
+            cout << "inf";
+        else perebor(a, b, c); 
+} 
+
+int main() 
+{ 
+    int a, b, c; cin >> a >> b >> c;
+    outer_points(a, b, c); 
+    
+    return 0; 
+}    
+
