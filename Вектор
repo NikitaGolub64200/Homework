@@ -1,0 +1,81 @@
+#include <iostream>
+
+class vector
+{
+    int q;// количество
+    double* d;// data
+    int size;
+public:
+    vector (int s)
+    {
+        q=0;
+        size = s;
+        d = new double[size];
+        
+    }
+    vector (){
+        d = new double[1];
+    }
+    void  add(int new_size){
+        double* temp = new double [new_size];
+        for (int i = 0; i < size; i++)
+            temp[i] = d[i];
+        delete[] d;
+        d = temp;
+        size = new_size;
+    }
+    const int& operator[](int i)
+    {
+        return d[i]; // это оператор [] , амперсанд для того что бы брался именно адрес элемента, const так как мы не можем изменить этот адрес.
+    }
+    void pushback(double a){
+        if (q == size){
+            int new_size = 2*size;
+            double* temp = new double [new_size];
+            for (int i = 0; i < size; i++)
+                temp[i] = d[i];
+            delete[] d;
+            d = temp;
+            d[size] = a;
+            size = new_size;
+        }
+        else
+        {
+            d[q] = a;
+        }
+        q++;
+    }
+    
+    int _q(){
+        return q;// просто получаю количество
+    }
+    int _size(){
+        return size;// здесь размер
+    }
+    void Fuse(vector b)
+    {
+        int q1 = q;
+        int q2 = b._q();
+        int new_size = size + b._size();
+        double* temp = new double [size];
+        for (int i = 0; i < q1; i++){
+            temp[i] = d[i];
+            q++;
+        }
+        for(int i = q1; i < q1 + q2; i++){
+            temp[i] = b[i];
+            q++;
+        }
+        delete[] d;
+        d = temp;
+    }
+    
+    int pop()
+    {
+        double* temp = new double[size];
+        for (int i = 0; i < q - 1; i++)
+            temp[i] = d[i];
+        double h = d[q - 1];
+        delete[] d;
+        d = temp;
+        q--;return h;}};// не ставьте два пожайлуста
