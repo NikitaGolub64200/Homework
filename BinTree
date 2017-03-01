@@ -1,0 +1,71 @@
+#include<iostream>
+#include<cstdlib>
+using namespace std;
+struct node
+{
+    int key_value;
+    node *left=NULL;
+    node *right=NULL;
+};
+node * root ;
+class btree
+{
+public:
+    btree(int a){
+    root = new node ;
+        root -> key_value = a;
+    }
+    
+            void destroy_tree(node *leaf)
+        {
+            if(leaf!=NULL)
+            {
+                destroy_tree(leaf->left);
+                destroy_tree(leaf->right);
+                delete leaf;
+            }
+        }
+        void insert(int key, node *leaf)
+        {
+            if(key< leaf->key_value)
+            {
+                if(leaf->left!=NULL)
+                    insert(key, leaf->left);
+                else
+                {
+                    leaf->left=new node;
+                    leaf->left->key_value=key;
+                    leaf->left->left=NULL;
+                    leaf->left->right=NULL;
+                }
+            }
+            else if(key>=leaf->key_value)
+            {
+                if(leaf->right!=NULL)
+                    insert(key, leaf->right);
+                else
+                {
+                    leaf->right=new node;
+                    leaf->right->key_value=key;
+                    leaf->right->left=NULL;
+                    leaf->right->right=NULL;            }
+            }
+        }
+        bool DFS(int key_value,node *leaf)// BFS не смог(
+        {
+            if (leaf==NULL){
+                return false;
+            }
+            if (leaf->key_value==key_value){
+                return true;
+            }
+            if (DFS(key_value,leaf->left))
+            {
+                return true ;
+            }
+        }
+};
+int main(){
+    return 0;
+}
+
