@@ -64,6 +64,16 @@ public:
                 return true ;
             }
         }
+        node* find(node* p, int k)
+    {
+        if( !p ) return 0;
+        if (k == p->key_value )
+            return p;
+        if (k < p->key_value)
+            return find(p->left,k);
+        else
+            return find (p->right,k);
+    }
     bool DFS (int key_value)
     {
         queue <node*> A;
