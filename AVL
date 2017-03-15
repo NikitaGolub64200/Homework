@@ -12,21 +12,36 @@ struct node
 class AVLtree{
     node* root;
 public:
+    AVLtree(int a){
+        root = new node;
+        root -> key = a;
+        root -> height = 1;
+    };
     void destroy_tree(node *n)
-{
-    if(n!=NULL)
     {
-        destroy_tree(n->left);
-        destroy_tree(n->right);
-        delete n;
+        if(n!=NULL)
+        {
+            destroy_tree(n->left);
+            destroy_tree(n->right);
+            delete n;
+        }
     }
-}
-
+    
     
     ~AVLtree(){
-    destroy_tree(root);
-}
-
+        destroy_tree(root);
+    }
+    
+    node* find(node* p, int k)  // поиск k в дереве p
+    {
+        if( !p ) return 0;
+        if (k == p->key )
+            return p;
+        if (k < p->key)
+            return find(p->left,k);
+        else
+            return find (p->right,k);
+    }
     bool DFS (int data, node* n){
         if (n == NULL)
             return false;
@@ -57,69 +72,69 @@ public:
     
     
     int height(node* p)
-{
-    return p?p->height:0;
-}
-
-
+    {
+        return p?p->height:0;
+    }
+    
+    
     int balancefactor(node* p)
-{
-    return height(p->right)-height(p->left);
-}
-
-
+    {
+        return height(p->right)-height(p->left);
+    }
+    
+    
     void fixheight(node* p)
-{
-    int hleft = height(p->left);
-    int hright = height(p->right);
-    p->height = (hleft>hright?hleft:hright)+1;
-}
-
-        node* rotright(node* p){
-    node* q = p->left;
-    p->left = q->right;
-    q->right = p;
-    fixheight(p);
-    fixheight(q);
-    return q;
-}
-
-
+    {
+        int hleft = height(p->left);
+        int hright = height(p->right);
+        p->height = (hleft>hright?hleft:hright)+1;
+    }
+    
+    node* rotright(node* p){
+        node* q = p->left;
+        p->left = q->right;
+        q->right = p;
+        fixheight(p);
+        fixheight(q);
+        return q;
+    }
+    
+    
     node* rotleft(node* q) {
-    node* p = q->right;
-    q->right = p->left;
-    p->left = q;
-    fixheight(q);
-    fixheight(p);
-    return p;
-}
-
-
+        node* p = q->right;
+        q->right = p->left;
+        p->left = q;
+        fixheight(q);
+        fixheight(p);
+        return p;
+    }
+    
+    
     node* balance(node* p){
-    fixheight(p);
-    if( balancefactor(p)==2 )
-    {
-        if( balancefactor(p->right) < 0 )
-            p->right = rotright(p->right);
-        return rotleft(p);
-    }
-    if( balancefactor(p)==-2 )
-    {
-        if( balancefactor(p->left) > 0  )
-            p->left = rotleft(p->left);
-        return rotright(p);
-    }
-    return p; }
-
-
+        fixheight(p);
+        if( balancefactor(p)==2 )
+        {
+            if( balancefactor(p->right) < 0 )
+                p->right = rotright(p->right);
+            return rotleft(p);
+        }
+        if( balancefactor(p)==-2 )
+        {
+            if( balancefactor(p->left) > 0  )
+                p->left = rotleft(p->left);
+            return rotright(p);
+        }
+        return p; }
+    
+    
     node* insert(node* p, int k) {
-    if( !p ) return new node(k);
-    if( k<p->key )
-        p->left = insert(p->left,k);
-    else
-        p->right = insert(p->right,k);
-    return balance(p);
-}
+        if( !p ) return new node(k);
+        if( k<p->key )
+            p->left = insert(p->left,k);
+        else
+            p->right = insert(p->right,k);
+        return balance(p);
+    }
 };
 
 
