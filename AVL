@@ -1,0 +1,130 @@
+#include <iostream>
+#include <queue>
+struct node
+{
+    int key,data;
+    int height;
+    node* left;
+    node* right;
+    node(int k) { key = k; left = right = 0; height = 1; }
+};
+
+class AVLtree{
+    node* root;
+public:
+    void destroy_tree(node *n)
+{
+    if(n!=NULL)
+    {
+        destroy_tree(n->left);
+        destroy_tree(n->right);
+        delete n;
+    }
+}
+
+    
+    ~AVLtree(){
+    destroy_tree(root);
+}
+
+    bool DFS (int data, node* n){
+        if (n == NULL)
+            return false;
+        if (n -> data == data)
+            return true;
+        if (DFS(data, n->left))
+            return true;
+        if (DFS(data, n->right))
+            return true;
+        return false;
+    }
+    
+    bool BFS (int data){
+        std::queue <node*> A;
+        A.push(root);
+        while (!A.empty()){
+            node* temp = A.back();
+            A.pop();
+            if (temp -> data == data)
+                return true;
+            if (temp -> left != NULL)
+                A.push(temp -> left);
+            if (temp -> right != NULL)
+                A.push(temp -> right);
+        }
+        return false;
+    }
+    
+    
+    int height(node* p)
+{
+    return p?p->height:0;
+}
+
+
+    int balancefactor(node* p)
+{
+    return height(p->right)-height(p->left);
+}
+
+
+    void fixheight(node* p)
+{
+    int hleft = height(p->left);
+    int hright = height(p->right);
+    p->height = (hleft>hright?hleft:hright)+1;
+}
+
+        node* rotright(node* p){
+    node* q = p->left;
+    p->left = q->right;
+    q->right = p;
+    fixheight(p);
+    fixheight(q);
+    return q;
+}
+
+
+    node* rotleft(node* q) {
+    node* p = q->right;
+    q->right = p->left;
+    p->left = q;
+    fixheight(q);
+    fixheight(p);
+    return p;
+}
+
+
+    node* balance(node* p){
+    fixheight(p);
+    if( balancefactor(p)==2 )
+    {
+        if( balancefactor(p->right) < 0 )
+            p->right = rotright(p->right);
+        return rotleft(p);
+    }
+    if( balancefactor(p)==-2 )
+    {
+        if( balancefactor(p->left) > 0  )
+            p->left = rotleft(p->left);
+        return rotright(p);
+    }
+    return p; }
+
+
+    node* insert(node* p, int k) {
+    if( !p ) return new node(k);
+    if( k<p->key )
+        p->left = insert(p->left,k);
+    else
+        p->right = insert(p->right,k);
+    return balance(p);
+}
+};
+
+
+
+int main() {
+    
+    return 0;
+}
