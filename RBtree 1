@@ -1,0 +1,275 @@
+#include <iostream>
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+struct node
+{
+    node* right;
+    node* parent;
+    string data;
+    bool colour;
+    node* left;
+};
+class RB
+{
+private:
+    node* root;
+    node* NIL;
+public:
+    RB()
+    {
+        NIL = new node;
+        NIL->colour = 0;
+        
+        root = new node;
+        root->parent = NULL;
+        root->data = "\0";
+        root->left = NIL;
+        root->right = NIL;
+        root->colour = 0;
+    }
+    
+    void left_rotate(node* q)
+    {
+        node* p = q->right;
+        q->right = p->left;
+        
+        if(p->left != NIL)
+        {
+            p->left->parent = q;
+        }
+        
+        p->parent = q->parent;
+        
+        if(q->parent == NULL)
+        {
+            root = p;
+        }
+        else
+        {
+            if(q == q->parent->left)
+            {
+                q->parent->left = p;
+            }
+            else
+            {
+                q->parent->right = p;
+            }
+        }
+        p->left = q;
+        q->parent = p;
+    }
+    
+    void right_rotate(node* p)
+    {
+        node* q = p->left;
+        p->left = q->right;
+        
+        if(q->right != NIL)
+        {
+            q->right->parent = p;
+        }
+        
+        q->parent = p->parent;
+        
+        if(p->parent == NULL)
+        {
+            root = q;
+        }
+        else
+        {
+            if(p == p->parent->right)
+            {
+                p->parent->right = q;
+            }
+            else
+            {
+                p->parent->left = q;
+            }
+        }
+        q->right = p;
+        p->parent = q;
+    }
+    void insert(string a)
+    {
+        if(cross_tree3(root,a))
+        {
+            cout << "this node exists" << endl;
+        }
+        if(root->data == "\0")
+        {
+            root->data = a;
+            return;
+        }
+        
+        node* temp = new node;
+        temp->left = NIL;
+        temp->right = NIL;
+        node* n = root;
+        
+    my_begin:
+        
+        if(n->data > a)
+        {
+            if(n->left == NIL)
+            {
+                temp->data = a;
+                n->left = temp;
+                temp->parent = n;
+                fix_colour(temp);
+                return;
+            }
+            n = n->left;
+            goto my_begin;
+        }
+        
+        if(n->data < a)
+        {
+            if(n->right == NIL)
+            {
+                temp->data = a;
+                n->right = temp;
+                temp->parent = n;
+                fix_colour(temp);
+                return;
+            }
+            n = n->right;
+            goto my_begin;
+        }
+    }
+    
+    void fix_colour(node* p)
+    {
+        p->colour = 1;
+        while((p != root) && (p->parent->colour == 1))
+        {
+            if(p->parent == p->parent->parent->left)
+            {
+                node* q = p->parent->parent->right;
+                
+                if(q->colour == 1)
+                {
+                    p->parent->colour = 0;
+                    q->colour = 0;
+                    p->parent->parent->colour = 1;
+                    p = p->parent->parent;
+                }
+                else
+                {
+                    if(p == p->parent->right)
+                    {
+                        p = p->parent;
+                        left_rotate(p);
+                    }
+                    
+                    p->parent->colour = 0;
+                    p->parent->parent->colour = 1;
+                    right_rotate(p->parent->parent);
+                }
+            }
+            else
+            {
+                node* q = p->parent->parent->left;
+                
+                if(q->colour == 1)
+                {
+                    p->parent->colour = 0;
+                    q->colour = 0;
+                    p->parent->parent->colour = 1;
+                    p = p->parent->parent;
+                }
+                else
+                {
+                    if(p == p->parent->left)
+                    { 
+                        p = p->parent; 
+                        right_rotate(p); 
+                    } 
+                    
+                    p->parent->colour = 0; 
+                    p->parent->parent->colour = 1; 
+                    left_rotate(p->parent->parent); 
+                } 
+            } 
+        } 
+        root->colour = 0; 
+    }
+    int power()
+    { 
+        int i = 0;
+        if(root->data == "\0") 
+        { 
+            cout << i << endl;
+            return i;
+        } 
+        cross(root,i);
+        cout << i << endl;
+        return i;
+        
+    }
+    void cross(node* n, int& index)    {
+        index++; 
+        if(n->left !=NIL ) 
+        { 
+            cross(n->left,index);
+        } 
+        if(n->right != NIL) 
+        { 
+            cross(n->right,index);
+        } 
+        
+    }
+    
+    bool my_find(string str)
+    { 
+        if(cross_tree3(root,str)) 
+        { 
+            cout << "is in set" << endl;
+            return true; 
+        } 
+        else 
+        { 
+            cout << " is not in set" << endl;
+            return false; 
+        } 
+    } 
+    bool cross_tree3(node* n,string str)
+    { 
+        if(n == NIL) 
+        { 
+            return false; 
+        } 
+        if(n->data == str) 
+        { 
+            return true; 
+        } 
+        if(cross_tree3(n->left,str)) 
+        { 
+            return true; 
+        } 
+        if(cross_tree3(n->right,str)) 
+        { 
+            return true; 
+        } 
+        return false; 
+    }
+    void printofmultiplicity(node* n)
+    { 
+        cout << n->data << endl;
+        if(n->left != NIL ) 
+        { 
+            printofmultiplicity(n->left);
+        } 
+        if(n->right != NIL) 
+        { 
+            printofmultiplicity(n->right);
+        } 
+        
+    } 
+}; 
+
+int main() 
+{ 
+       return 0;
+}
