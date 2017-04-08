@@ -1,0 +1,16 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <iterator>
+using namespace std;
+class dictionary
+{
+    map<string, int> mapdictionary;
+    // Inserting data in std::map
+    mapdictionary.insert(make_pair("earth", 1));
+    mapdictionary.insert(make_pair("moon", 2));
+    mapdictionary["sun"] = 3;
+    // Will replace the value of already added key i.e. earth
+    mapdictionary["earth"] = 4;
+    // ... дальше вставка
+   
