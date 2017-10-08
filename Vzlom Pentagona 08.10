@@ -1,0 +1,78 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+void incidencematrix(int n, int m, int arr[][2], bool **arr2)
+{
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < m; j++)
+        {
+            arr2[i][j] = 0;
+        }
+    }
+    
+    for(int i = 0; i < m ; i++)
+    {
+        arr2[arr[i][0]-1][i] = 1;
+        arr2[arr[i][1]-1][i] = 1;
+    }
+}
+void smejnostmatrix(int n, int k, int arr[][2], bool **arr2)
+{
+    for(int i =0; i < k; i++)
+    {for(int j = 0; j < k; j++)
+        {arr2[i][j] = 0;
+        }
+    }
+    
+    for(int i = 0; i < n; i++)
+    {
+        arr2[arr[i][0]-1][arr[i][1]-1] = 1;
+        arr2[arr[i][1]-1][arr[i][0]-1] = 1;
+    }
+}
+void in(int n,int arr[][2])
+{
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < 2; j++)
+        {
+            cin >> arr[i][j];
+        }
+    }
+}
+void coutincidence(int n, int m, bool **arr)
+{
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < m; j++)
+        {
+            cout << arr[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+void smojnostlist(int m, vector<vector<int>>& adj_list, int arr[][2])
+{for(int i =0; i < m; i++)
+    {adj_list[arr[i][0]-1].push_back(arr[i][1]);
+        adj_list[arr[i][1]-1].push_back(arr[i][0]);}
+}
+
+void coutsmejnostlist(vector<vector<int>>& adj_list)
+{
+    for(vector<vector<int> >::iterator it = adj_list.begin(); it != adj_list.end(); ++it)
+    {
+        for(vector<int>::iterator it2 = (*it).begin(); it2 != (*it).end(); ++it2)
+        {
+            cout << *it2 << " ";
+        }
+        cout << endl;
+    }
+}
+
+int main()
+{
+   
+    
+    return 0;
+}
