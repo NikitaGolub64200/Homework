@@ -1,0 +1,62 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+
+using namespace std;
+void path(vector<vector<int> >& list,int n, bool **arr)
+{
+    int v = 0;
+    for(int i = 0; i < list.size(); i++)
+    {if(list[i].size()%2 == 1)
+    {v = i;
+        ;}}
+    stack<int> _stack;
+    _stack.push(v);
+    while(!_stack.empty())
+    {int p = _stack.top();
+        for(int i = 0; i < n; i++)
+        {if(arr[p][i] == 1)
+        {_stack.push(i);
+            arr[p][i] = 0;
+            arr[i][p] = 0;
+            ;
+        }
+        }
+        if(p == _stack.top())
+        {_stack.pop();
+            cout << p << " ";}
+    }
+}
+void matrix(int m,int n ,int **ar,   int arr[][2])
+{
+    for(int i =0; i < m; i++)
+    {for(int j = 0; j < m; j++)
+        {ar[i][j] = 0;
+        }    }
+    for(int i = 0; i < n; i++)
+    {ar[arr[i][0]][arr[i][1]] = 1;
+        ar[arr[i][1]][arr[i][0]] = 1;}}
+void createlist(int m, vector<vector<int> >& list, int arr[][2])
+{
+    for(int i =0; i < m; i++)
+    {
+        list[arr[i][0]].push_back(arr[i][1]);
+        list[arr[i][1]].push_back(arr[i][0]);
+    }
+}
+void input(int n,int arr[][2])
+{
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < 2; j++)
+        {
+            cin >> arr[i][j];
+        }
+    }
+}
+
+
+int main()
+{
+    return 0 ;}
+
