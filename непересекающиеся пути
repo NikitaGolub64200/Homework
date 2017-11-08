@@ -1,0 +1,58 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+void path(vector<vector<int> >& adjlist, int m, int v, int u)
+{queue<int> q;
+    vector<int> p(m);
+    bool a[m];
+    for(int i = 0; i < m; i++)
+    {a[i] = 0;}
+    q.push(v);a[v] = 1;p[v] = -1;
+    while(!q.empty())
+    {int n = q.front();
+        q.pop();
+        for( int i = 0; i < adjlist[n].size(); i++)
+        {int temp = adjlist[n][i];
+            if(!a[temp])
+            {a[temp] = 1;
+                q.push(temp);
+                p[temp] = n;}}}
+    if(!a[u])
+    {cout << "-";
+        ;
+    }vector<int> path;
+    int length(0);
+    for(int i = u; i!=-1; i = p[i])
+    {   path.push_back(i);   }
+    reverse (path.begin(), path.end());
+    cout << "path-";
+    for( int i = 0; i < path.size(); i++)
+    {
+        cout << path[i] << " ";
+        length++;
+    }
+    for( int i = 0; i < path.size(); i++)
+    {
+        for(int j = 0; j < adjlist[v].size(); j++)
+        {//...
+            }}}
+
+void input(int n,int arr[][2])
+{
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < 2; j++)
+        {
+            cin >> arr[i][j];}}}
+
+void list(int m, vector<vector<int> >& adjlist, int arr[][2])
+{  for(int i = 0; i < m; i++)
+{   adjlist[arr[i][0]].push_back(arr[i][1]);
+    adjlist[arr[i][1]].push_back(arr[i][0]);  }
+}
+int main()
+{
+    
+    return 0;
+}
