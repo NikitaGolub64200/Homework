@@ -1,0 +1,120 @@
+
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int t = 0;
+int t2 = 0;
+void smejmatrix(int n, int m, int arr[][2], bool **arr2)
+{
+    for(int i =0; i < m; i++)
+    {
+        for(int j = 0; j < m; j++)
+        {
+            arr2[i][j] = 0;
+        }
+    }
+    
+    for(int i = 0; i < n; i++)
+    {
+        arr2[arr[i][0]-1][arr[i][1]-1] = 1;
+        arr2[arr[i][1]-1][arr[i][0]-1] = 1;
+    }
+}
+
+void createsmejlist(int m, vector<vector<int> >& adj_list, int arr[][2])
+{
+    for(int i = 0; i <= m; i++)
+    {
+        adj_list[arr[i][0]].push_back(arr[i][1]);
+        adj_list[arr[i][1]].push_back(arr[i][0]);}}
+void input(int n,int arr[][2])
+{
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < 2; j++)
+        {
+            cin >> arr[i][j];
+        }
+    }
+}
+
+void coutsmejlist(vector<vector<int> >& adj_list)
+{
+    for(vector<vector<int> >::iterator it = adj_list.begin(); it != adj_list.end(); it++)
+    {
+        for(vector<int>::iterator it2 = (*it).begin(); it2 != (*it).end(); it2++)
+        {
+            cout << *it2 << " ";
+        }
+        cout << endl;}}
+void findcutedge(vector<int>&edge,vector<vector<int> >& arr, int n, int start, bool used[],int time[], int up[],int p = -1)
+{
+    used[start] = 1;
+    time[start] = t++;
+    up[start] = t++;
+    int sons = 0;
+    
+    for(int i = 0; i < arr[start].size(); i++)
+    {
+        int to = arr[start][i];
+        if(to == p)
+        {
+            continue;
+        }
+        if(used[to])
+        {
+            up[start] = min(up[start],time[to]);
+        }
+        else
+        {
+            findcutedge(edge,arr,n,to,used,time,up,start);
+            up[start] = min(up[start], up[to]);
+            if(up[to] >= time[start] && p!=-1)
+            {
+                int check = 0;
+                for(int i = 0; i < edge.size(); i++)
+                {
+                    if(start == edge[i])
+                    {
+                        check++;}}
+                if(check == 0)
+                {
+                    edge.push_back(start);}}
+            sons++;}}
+    if(p == -1 && sons > 1)
+    {
+        int check2 = 0;
+        for(int i = 0; i < edge.size(); i++)
+        {
+            if(start == edge[i])
+            {
+                check2++;}}
+        if(check2 == 0)
+        {edge.push_back(start);
+        }}}
+
+void bridges(vector<int>& bridge,vector<vector<int> >& arr, int n, int start, bool used2[],int time[], int up[],int p = -1)
+{used2[start] = 1;
+    time[start] = t2++;
+    up[start] = t2++;
+    for(int i = 0; i < arr[start].size(); i++)
+    {int to = arr[start][i];
+        if(to == p)
+        {continue;
+        }
+        if(used2[to])
+        {up[start] = min(up[start], time[to]);
+        }
+        else
+        {bridges(bridge,arr,n,to,used2,time,up,start);
+            up[start] = min(up[start],up[to]);
+            if(up[to]>time[start])
+            {
+                bridge.push_back(start);
+                bridge.push_back(to); }}}}
+int main()
+{
+    return 0;
+}
